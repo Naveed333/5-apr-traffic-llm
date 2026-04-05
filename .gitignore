@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.pyo
+
+# vLLM call log (can be very large)
+trafficllm_milan/outputs/llm_calls_log.jsonl
+
+# Generated outputs (reproducible from training)
+trafficllm_milan/outputs/p_exam/
+trafficllm_milan/outputs/results/
+trafficllm_milan/outputs/training_records/
+
+# macOS
+.DS_Store
+
+# Claude Code local settings
+.claude/
