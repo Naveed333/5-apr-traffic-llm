@@ -4,7 +4,7 @@ import json
 import os
 import glob
 
-from config import CONTEXT_SIZES, TOKENS_RESERVE, GRID_CELL_ID, LOCATION
+from config import CONTEXT_SIZES, TOKENS_RESERVE, GRID_CELL_ID
 from llm_client import count_tokens
 from prompt_builder import format_input, format_output
 
@@ -20,42 +20,23 @@ def load_all_records():
 
 
 def _record_to_example_text(rec, n):
-    t     = rec['timestep']
-    x     = rec['x']
-    y     = rec['y']
-    iters = rec.get('iterations', [])
+    t = rec['timestep']
+    x = rec['x']
+    y = rec['y']
 
     lines = [
         f'--- Example {n} ---',
-        f'INPUT (past 24h, timestep {t}, Milan {GRID_CELL_ID} {LOCATION}):',
+        f'INPUT (past 24h, timestep {t}, Milan {GRID_CELL_ID}):',
         format_input(x, t),
         '',
-        f'ITERATION 0 — first prediction:',
-        f'{format_output(rec["y_hat_0"])}  [MAE={rec["mae_0"]:.4f} MB]',
+        f'Initial prediction (MAE={rec["mae_0"]:.4f} MB):',
+        format_output(rec['y_hat_0']),
         '',
-    ]
-
-    for it in iters:
-        i = it['i']
-        lines += [
-            f'Feedback (iter {i}):',
-            it['p_feed'].strip(),
-            f'Refinement (iter {i}):',
-            it['p_refine'].strip(),
-            f'ITERATION {i+1} — refined prediction:',
-            f'{format_output(it["y_hat_next"])}  [MAE={it["mae_next"]:.4f} MB]',
-            '',
-        ]
-
-    method = rec.get('method_found', 'unknown')
-    if rec.get('converged'):
-        lines.append(f'CONVERGED at iteration {rec["converged_at"]}. Method: {method}.')
-    else:
-        lines.append(f'MAX_ITERATIONS reached. Method: {method}.')
-
-    lines += [
-        f'Final prediction: {format_output(rec["y_hat_final"])}',
-        f'Real ground truth: {format_output(y)}',
+        f'Final prediction (MAE={rec["mae_final"]:.4f} MB):',
+        format_output(rec['y_hat_final']),
+        '',
+        f'Ground truth:',
+        format_output(y),
         '---',
         '',
     ]

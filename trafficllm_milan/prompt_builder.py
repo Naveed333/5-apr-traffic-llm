@@ -1,6 +1,6 @@
 # prompt_builder.py — build all prompt components for TrafficLLM
 
-from config import GRID_CELL_ID, LOCATION, L
+from config import GRID_CELL_ID, L
 
 
 def format_input(x, timestep):
@@ -11,8 +11,7 @@ def format_input(x, timestep):
         f'H{i+1:02d}: {v:.4f} MB' for i, v in enumerate(x)
     )
     return (
-        f'At timestep {timestep}, Milan grid cell {GRID_CELL_ID}, '
-        f'location {LOCATION},\n'
+        f'At timestep {timestep}, Milan grid cell {GRID_CELL_ID},\n'
         f'past 24h traffic was:\n{hours}'
     )
 
@@ -27,9 +26,9 @@ def format_output(y):
 def build_p_ques():
     """Build the prediction question prompt."""
     return (
-        f'What is the predicted internet traffic for the next {L} hours?\n'
-        f'Provide one value per hour from H01 to H{L:02d} in MB.\n'
-        f'Format: H01: X MB  H02: X MB ... H{L:02d}: X MB'
+        f'Predict the internet traffic for the next {L} hours in MB.\n'
+        f'Output exactly {L} numbers separated by commas, one per hour in order. No text, no labels, just numbers.\n'
+        f'Example: 45.23, 38.91, 31.50, 29.10, 33.80, 42.00, 55.10, 61.20, 58.40, 52.30, 49.10, 47.80, 46.20, 44.50, 43.10, 41.80, 40.20, 39.50, 38.90, 38.10, 37.50, 39.20, 42.10, 48.30'
     )
 
 
@@ -79,8 +78,8 @@ def build_p_refine(feedback_text, target_time=None):
         f'timestamp and match the format. More accurate numerical time series '
         f'prediction methods should be considered, including numerical methods, '
         f'hybrid methods such as Seasonal ARIMA and LSTM+ARIMA combinations.\n'
-        f'Provide ONLY the refined predictions in the format: '
-        f'H01: X MB  H02: X MB ... H{L:02d}: X MB'
+        f'Output exactly {L} refined traffic values in MB, comma-separated, one per hour in order. No text, no labels, just numbers.\n'
+        f'Example: 45.23, 38.91, 31.50, 29.10, 33.80, 42.00, 55.10, 61.20, 58.40, 52.30, 49.10, 47.80, 46.20, 44.50, 43.10, 41.80, 40.20, 39.50, 38.90, 38.10, 37.50, 39.20, 42.10, 48.30'
     )
 
 

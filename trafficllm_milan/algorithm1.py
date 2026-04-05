@@ -46,6 +46,15 @@ def parse_prediction(text):
     return None
 
 
+def call_and_parse(prompt, max_tokens=800):
+    """Call LLM and parse prediction. Raises ValueError with raw response if parsing fails."""
+    raw = call_llm(prompt, max_tokens=max_tokens)
+    result = parse_prediction(raw)
+    if result is None:
+        raise ValueError(f'parse_prediction failed. Raw LLM response:\n{raw}')
+    return result
+
+
 def extract_method(text):
     """Identify prediction method name from feedback text."""
     patterns = [
@@ -90,30 +99,30 @@ def run_algorithm1(window, p_exam_so_far=''):
 
     # LINE 2: initial prediction — Eq.(3): p_exam + p_input + p_ques
     prompt_eq3 = (p_exam_so_far + '\n' if p_exam_so_far else '') + p_input + '\n' + p_ques
-    y_hat_0    = parse_prediction(call_llm(prompt_eq3, max_tokens=512))
+    y_hat_0    = call_and_parse(prompt_eq3)
     mae_prev   = compute_mae(y, y_hat_0)
     y_hat_i    = y_hat_0
 
     record['y_hat_0'] = y_hat_0
     record['mae_0']   = mae_prev
 
-    eq5_context = p_input + '\n'
-    p_feed_i    = ''
-    y_hat_next  = y_hat_0
+    p_feed_i   = ''
+    y_hat_next = y_hat_0
 
     # LINE 3-8: refinement loop
     for i in range(MAX_ITERATIONS):
-        # LINE 5: generate feedback
-        feedback_raw = call_llm(eq5_context + build_p_feed_prompt(y_hat_i, y, mae_prev, i), max_tokens=1024)
+        # LINE 5: generate feedback (uses p_input + current prediction as context)
+        feed_context = p_input + '\n' + format_output(y_hat_i) + '\n'
+        feedback_raw = call_llm(feed_context + build_p_feed_prompt(y_hat_i, y, mae_prev, i), max_tokens=1024)
 
         # LINE 6: validate and correct feedback
-        validated = call_llm(eq5_context + feedback_raw + '\n' + build_validation_prompt(), max_tokens=512)
-        p_feed_i  = call_llm(eq5_context + feedback_raw + '\n' + validated + '\n' + build_critique_prompt(), max_tokens=512)
+        validated = call_llm(feed_context + feedback_raw + '\n' + build_validation_prompt(), max_tokens=512)
+        p_feed_i  = call_llm(feed_context + feedback_raw + '\n' + validated + '\n' + build_critique_prompt(), max_tokens=512)
 
-        # LINE 7: refine — Eq.(5)
-        p_refine_i  = build_p_refine(p_feed_i, target_time=f'Day {window.get("date_end", t + 1)}')
-        eq5_context += format_output(y_hat_i) + '\n' + p_feed_i + '\n' + p_refine_i + '\n'
-        y_hat_next  = parse_prediction(call_llm(eq5_context, max_tokens=512))
+        # LINE 7: refine — fresh focused prompt so model doesn't see rambling context
+        p_refine_i    = build_p_refine(p_feed_i, target_time=f'Day {window.get("date_end", t + 1)}')
+        refine_prompt = p_input + '\n' + p_refine_i
+        y_hat_next    = call_and_parse(refine_prompt)
 
         mae_curr  = compute_mae(y, y_hat_next)
         delta_mae = abs(mae_curr - mae_prev)
