@@ -6,7 +6,7 @@ LOCATION = '45.4642N 9.1900E'
 
 TOTAL_DAYS = 30
 HOURS_PER_DAY = 24
-W = 24       # input window: one day of history
+W = 72       # input window: one day of history
 L = 24       # predict horizon: one day ahead
 
 TRAIN_DAYS = 21
@@ -16,8 +16,8 @@ CONVERGENCE_THRESHOLD = 0.1
 MAX_ITERATIONS = 10
 
 VLLM_BASE_URL = 'http://localhost:8000/v1'
-# VLLM_MODEL = '/workspace/models/llama-3.1-8b'
-VLLM_MODEL = '/workspace/models/llama-3.1-1b'
+VLLM_MODEL = '/workspace/models/llama-3.1-8b'
+# VLLM_MODEL = '/workspace/models/llama-3.1-1b'
 
 TEMPERATURE = 0.0
 
