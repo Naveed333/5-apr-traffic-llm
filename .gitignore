@@ -6,9 +6,9 @@ __pycache__/
 trafficllm_milan/outputs/llm_calls_log.jsonl
 
 # Generated outputs (reproducible from training)
-trafficllm_milan/outputs/p_exam/
-trafficllm_milan/outputs/results/
-trafficllm_milan/outputs/training_records/
+# trafficllm_milan/outputs/p_exam/
+# trafficllm_milan/outputs/results/
+# trafficllm_milan/outputs/training_records/
 
 # macOS
 .DS_Store
