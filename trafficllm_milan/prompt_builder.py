@@ -8,7 +8,7 @@ def format_input(x, timestep):
     Build p_input: natural-language description of the 24h input window.
     """
     hours = '  '.join(
-        f'H{i+1:02d}: {v:.4f} MB' for i, v in enumerate(x)
+        f'P{i+1:02d}: {v:.4f} MB' for i, v in enumerate(x)
     )
     return (
         f'At timestep {timestep}, Milan grid cell {GRID_CELL_ID},\n'
@@ -71,14 +71,8 @@ def build_p_refine(feedback_text, target_time=None):
     if target_time is None:
         target_time = 'the target time window'
     return (
-        f'Please refine predictions on {target_time} based on the previous '
-        f'thorough feedback. To enhance performance, the overall prediction '
-        f'error should be decreased. The prediction should match the function '
-        f'of the real traffic. The prediction should be complete for each '
-        f'timestamp and match the format. More accurate numerical time series '
-        f'prediction methods should be considered, including numerical methods, '
-        f'hybrid methods such as Seasonal ARIMA and LSTM+ARIMA combinations.\n'
-        f'Output exactly {L} refined traffic values in MB, comma-separated, one per hour in order. No text, no labels, just numbers.\n'
+        f'The previous prediction had errors. Output {L} improved traffic values in MB, '
+        f'comma-separated, one per hour. No text, no labels, just numbers.\n'
         f'Example: 45.23, 38.91, 31.50, 29.10, 33.80, 42.00, 55.10, 61.20, 58.40, 52.30, 49.10, 47.80, 46.20, 44.50, 43.10, 41.80, 40.20, 39.50, 38.90, 38.10, 37.50, 39.20, 42.10, 48.30'
     )
 

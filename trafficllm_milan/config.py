@@ -3,13 +3,13 @@
 DATASET_PATH = 'milan_traffic.csv'
 GRID_CELL_ID = '4455'
 
-TOTAL_DAYS = 30
+TOTAL_DAYS = 60
 HOURS_PER_DAY = 24
 W = 24       # input window: one day of history
 L = 24       # predict horizon: one day ahead
 
-TRAIN_DAYS = 21
-TEST_DAYS = 9
+TRAIN_DAYS = 42
+TEST_DAYS = 14
 
 CONVERGENCE_THRESHOLD = 0.1
 MAX_ITERATIONS = 10
