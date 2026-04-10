@@ -6,11 +6,10 @@ from datetime import datetime
 
 import numpy as np
 
+import config
 from config import CONTEXT_SIZE
 from data_loader import load_and_split
 from inference import load_pexam, predict
-
-RESULTS_DIR = os.path.join('outputs', 'results')
 
 
 def compute_mae(y_true, y_pred):
@@ -128,8 +127,9 @@ def _print_thesis_line(results):
 
 
 def _save_results(results, context_size):
-    os.makedirs(RESULTS_DIR, exist_ok=True)
-    path = os.path.join(RESULTS_DIR, f'results_{context_size}.json')
+    results_dir = os.path.join(config.OUTPUTS_BASE, 'results')
+    os.makedirs(results_dir, exist_ok=True)
+    path = os.path.join(results_dir, f'results_{context_size}.json')
     with open(path, 'w') as f:
         json.dump(results, f, indent=2)
     print(f'\n  Results saved to {path}')

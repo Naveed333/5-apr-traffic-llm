@@ -70,6 +70,8 @@ def create_windows(values, base_date=None):
 
     for t in range(TOTAL_DAYS - 1):
         start = t * HOURS_PER_DAY
+        if start + W + L > len(values):
+            break  # not enough data for this window (happens when W > 24)
         x = values[start: start + W].tolist()
         y = values[start + W: start + W + L].tolist()
         windows.append({

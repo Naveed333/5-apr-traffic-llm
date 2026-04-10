@@ -6,14 +6,17 @@ import time
 
 import numpy as np
 
+import config
 from data_loader import load_and_split
 from algorithm1 import run_algorithm1
 
-RECORDS_DIR = os.path.join('outputs', 'training_records')
+
+def _records_dir():
+    return os.path.join(config.OUTPUTS_BASE, 'training_records')
 
 
 def record_path(timestep):
-    return os.path.join(RECORDS_DIR, f'window_{timestep}.json')
+    return os.path.join(_records_dir(), f'window_{timestep}.json')
 
 
 def already_done(timestep):
@@ -22,7 +25,7 @@ def already_done(timestep):
 
 
 def save_record(record):
-    os.makedirs(RECORDS_DIR, exist_ok=True)
+    os.makedirs(_records_dir(), exist_ok=True)
     with open(record_path(record['timestep']), 'w') as f:
         json.dump(record, f, indent=2)
 

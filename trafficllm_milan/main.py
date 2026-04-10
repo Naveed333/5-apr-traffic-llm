@@ -18,6 +18,16 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 os.chdir(PROJECT_ROOT)
 
 
+def _patch_config(window_size=None, context_size=None):
+    """Patch config module in-place before lazy imports read it."""
+    import config
+    if window_size is not None:
+        config.W = window_size
+        config.OUTPUTS_BASE = os.path.join('outputs', f'W{window_size}')
+    if context_size is not None:
+        config.CONTEXT_SIZE = context_size
+
+
 # -----------------------------------------------------------------------
 # Phase: data
 # -----------------------------------------------------------------------
@@ -78,8 +88,8 @@ def phase_pexam(context_sizes=None):
     build_and_save_all(context_sizes=context_sizes)
 
     # Show first example of 4096 context for verification
-    import os
-    p4k = os.path.join('outputs', 'p_exam', 'p_exam_4096.txt')
+    import os, config
+    p4k = os.path.join(config.OUTPUTS_BASE, 'p_exam', 'p_exam_4096.txt')
     if os.path.exists(p4k):
         with open(p4k) as f:
             preview = f.read()[:1500]
@@ -166,13 +176,19 @@ def main():
     )
     parser.add_argument('--all', action='store_true', help='Run all phases in order')
     parser.add_argument('--context-size', type=int, default=None,
-                        help='Override CONTEXT_SIZE from config.py')
+                        help='Override CONTEXT_SIZE from config.py (e.g. 4096, 65536)')
+    parser.add_argument('--window-size', type=int, default=None,
+                        help='Override W (lookback hours) from config.py (e.g. 12, 24, 48)')
     parser.add_argument('--no-skip', action='store_true',
                         help='Re-run training even if records already exist')
 
     args = parser.parse_args()
 
-    ctx = args.context_size
+    # Patch config BEFORE any lazy imports so all modules see the correct values.
+    _patch_config(window_size=args.window_size, context_size=args.context_size)
+
+    import config
+    ctx = config.CONTEXT_SIZE  # use (possibly patched) value
 
     if args.all:
         phase_data()

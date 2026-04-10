@@ -1,0 +1,44 @@
+--- Example 1 ---
+INPUT (past 24h, timestep 1, Milan 4455 45.4642N 9.1900E):
+At timestep 1, Milan grid cell 4455, location 45.4642N 9.1900E,
+past 24h traffic was:
+H01: 55.0100 MB  H02: 44.4900 MB  H03: 31.8400 MB  H04: 30.2600 MB  H05: 29.1000 MB  H06: 36.8000 MB  H07: 44.5800 MB  H08: 51.3100 MB  H09: 53.4600 MB  H10: 47.5900 MB  H11: 47.0900 MB  H12: 49.2300 MB  H13: 47.5700 MB  H14: 55.9000 MB  H15: 56.7300 MB  H16: 65.0000 MB  H17: 68.5200 MB  H18: 69.1400 MB  H19: 74.8100 MB  H20: 84.0700 MB  H21: 87.6700 MB  H22: 86.7000 MB  H23: 81.8000 MB  H24: 61.5100 MB  H25: 52.6800 MB  H26: 40.5400 MB  H27: 37.5700 MB  H28: 31.9500 MB  H29: 30.6700 MB  H30: 33.6600 MB  H31: 45.0300 MB  H32: 56.6800 MB  H33: 51.9400 MB  H34: 55.3700 MB  H35: 55.8300 MB  H36: 53.0600 MB  H37: 53.1900 MB  H38: 57.4300 MB  H39: 56.9500 MB  H40: 64.8200 MB  H41: 71.1500 MB  H42: 76.8700 MB  H43: 95.4700 MB  H44: 90.8900 MB  H45: 90.4300 MB  H46: 87.1400 MB  H47: 85.7000 MB  H48: 73.2300 MB
+
+ITERATION 0 — first prediction:
+H01: 73.2300 MB  H02: 74.8100 MB  H03: 76.8700 MB  H04: 79.3300 MB  H05: 81.8000 MB  H06: 84.0700 MB  H07: 86.7000 MB  H08: 89.3300 MB  H09: 91.9600 MB  H10: 94.5900 MB  H11: 97.2200 MB  H12: 99.8500 MB  H13: 102.4800 MB  H14: 105.1100 MB  H15: 107.7400 MB  H16: 110.3700 MB  H17: 113.0000 MB  H18: 115.6300 MB  H19: 118.2600 MB  H20: 120.8900 MB  H21: 123.5200 MB  H22: 126.1500 MB  H23: 128.7800 MB  H24: 131.4100 MB  [MAE=33.0817 MB]
+
+Feedback (iter 0):
+**Q1: The Mean Absolute Error of the predictions is 41.4317 MB.**
+
+The correct step-by-step calculation for the Mean Absolute Error (MAE) is as follows:
+
+1. Find the absolute differences between the predicted and ground truth values for each timestamp:
+   - H01: |55.0100 - 73.2300| = 18.2200 MB
+   - H02: |44.4900 - 74.8100| = 30.3200 MB
+   - H03: |31.8400 - 76.8700| = 45.0300 MB
+   - H04: |30.2600 - 79.3300| = 49.0700 MB
+   - H05: |29.1000 - 81.8000| = 52.7000 MB
+   - H06: |36.8000 - 84.0700| = 47.2700 MB
+   - H07: |44.5800 - 86.7000| = 42.1200 MB
+   - H08: |51.3100 - 89.3300| = 38.0200 MB
+   - H09: |53.4600 - 91.9600| = 38.5000 MB
+   - H10: |47.5900 - 94.5900| = 47.0000 MB
+   - H11: |47.0900 - 97.2200| = 50.1300 MB
+   - H12: |49.2300 - 99.8500| = 50.6200 MB
+   - H13: |47.5700 - 102.4800| = 54.9100 MB
+   - H14: |55.9000 - 105.1100| = 49.2100 MB
+   - H15: |56.7300 - 107.7400| = 51.0100 MB
+   - H16: |65.0000 - 110.3700| = 45.3700 MB
+   - H17: |68.5200 - 113.0000| = 44.4800 MB
+   - H18: |69.1400 - 115.6300| = 46.4900 MB
+   - H19: |
+Refinement (iter 0):
+Please refine predictions on Day 2013-10-29 based on the previous thorough feedback. To enhance performance, the overall prediction error should be decreased. The prediction should match the function of the real traffic. The prediction should be complete for each timestamp and match the format. More accurate numerical time series prediction methods should be considered, including numerical methods, hybrid methods such as Seasonal ARIMA and LSTM+ARIMA combinations.
+Provide ONLY the refined predictions in the format: H01: X MB  H02: X MB ... H24: X MB
+ITERATION 1 — refined prediction:
+H01: 73.2300 MB  H02: 74.8100 MB  H03: 76.8700 MB  H04: 79.3300 MB  H05: 81.8000 MB  H06: 84.0700 MB  H07: 86.7000 MB  H08: 89.3300 MB  H09: 91.9600 MB  H10: 94.5900 MB  H11: 97.2200 MB  H12: 99.8500 MB  H13: 102.4800 MB  H14: 105.1100 MB  H15: 107.7400 MB  H16: 110.3700 MB  H17: 113.0000 MB  H18: 115.6300 MB  H19: 118.2600 MB  H20: 120.8900 MB  H21: 123.5200 MB  H22: 126.1500 MB  H23: 128.7800 MB  H24: 131.4100 MB  [MAE=33.0817 MB]
+
+CONVERGED at iteration 0. Method: unknown.
+Final prediction: H01: 73.2300 MB  H02: 74.8100 MB  H03: 76.8700 MB  H04: 79.3300 MB  H05: 81.8000 MB  H06: 84.0700 MB  H07: 86.7000 MB  H08: 89.3300 MB  H09: 91.9600 MB  H10: 94.5900 MB  H11: 97.2200 MB  H12: 99.8500 MB  H13: 102.4800 MB  H14: 105.1100 MB  H15: 107.7400 MB  H16: 110.3700 MB  H17: 113.0000 MB  H18: 115.6300 MB  H19: 118.2600 MB  H20: 120.8900 MB  H21: 123.5200 MB  H22: 126.1500 MB  H23: 128.7800 MB  H24: 131.4100 MB
+Real ground truth: H01: 57.6700 MB  H02: 52.0600 MB  H03: 41.8600 MB  H04: 36.5200 MB  H05: 39.2400 MB  H06: 41.4600 MB  H07: 42.8400 MB  H08: 49.6900 MB  H09: 58.3100 MB  H10: 66.1800 MB  H11: 86.3500 MB  H12: 79.0200 MB  H13: 82.0100 MB  H14: 86.3800 MB  H15: 86.1400 MB  H16: 80.1300 MB  H17: 83.1500 MB  H18: 79.7600 MB  H19: 80.2900 MB  H20: 76.0100 MB  H21: 82.5100 MB  H22: 89.4700 MB  H23: 80.1000 MB  H24: 81.9900 MB
+---

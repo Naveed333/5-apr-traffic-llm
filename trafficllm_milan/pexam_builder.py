@@ -4,16 +4,22 @@ import json
 import os
 import glob
 
+import config
 from config import CONTEXT_SIZES, TOKENS_RESERVE, GRID_CELL_ID, LOCATION
 from llm_client import count_tokens
 from prompt_builder import format_input, format_output
 
-RECORDS_DIR = os.path.join('outputs', 'training_records')
-PEXAM_DIR   = os.path.join('outputs', 'p_exam')
+
+def _records_dir():
+    return os.path.join(config.OUTPUTS_BASE, 'training_records')
+
+
+def _pexam_dir():
+    return os.path.join(config.OUTPUTS_BASE, 'p_exam')
 
 
 def load_all_records():
-    paths   = sorted(glob.glob(os.path.join(RECORDS_DIR, 'window_*.json')))
+    paths   = sorted(glob.glob(os.path.join(_records_dir(), 'window_*.json')))
     records = [json.load(open(p)) for p in paths]
     records.sort(key=lambda r: r.get('timestep', 0))
     return records
@@ -86,11 +92,12 @@ def build_and_save_all(context_sizes=None):
     records = load_all_records()
     print(f'Loaded {len(records)} training records.\n')
 
-    os.makedirs(PEXAM_DIR, exist_ok=True)
+    pexam_dir = _pexam_dir()
+    os.makedirs(pexam_dir, exist_ok=True)
 
     for ctx in context_sizes:
         p_exam, n_ex, n_tok = build_pexam(ctx, records)
-        path = os.path.join(PEXAM_DIR, f'p_exam_{ctx}.txt')
+        path = os.path.join(pexam_dir, f'p_exam_{ctx}.txt')
         with open(path, 'w') as f:
             f.write(p_exam)
         label = f'{ctx // 1024}K' if ctx >= 1024 else str(ctx)

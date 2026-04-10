@@ -2,18 +2,17 @@
 
 import os
 
+import config
 from config import CONTEXT_SIZE
 from llm_client import call_llm
 from prompt_builder import format_input, build_p_ques
 from algorithm1 import parse_prediction
 
-PEXAM_DIR = os.path.join('outputs', 'p_exam')
-
 
 def load_pexam(context_size=None):
     if context_size is None:
         context_size = CONTEXT_SIZE
-    path = os.path.join(PEXAM_DIR, f'p_exam_{context_size}.txt')
+    path = os.path.join(config.OUTPUTS_BASE, 'p_exam', f'p_exam_{context_size}.txt')
     with open(path) as f:
         return f.read()
 
