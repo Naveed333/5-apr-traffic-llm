@@ -91,6 +91,9 @@ def run_algorithm1(window, p_exam_so_far=''):
     # LINE 2: initial prediction — Eq.(3): p_exam + p_input + p_ques
     prompt_eq3 = (p_exam_so_far + '\n' if p_exam_so_far else '') + p_input + '\n' + p_ques
     y_hat_0    = parse_prediction(call_llm(prompt_eq3, max_tokens=512))
+    if y_hat_0 is None:
+        # LLM returned unparseable output — skip refinement, record zeros
+        y_hat_0 = [0.0] * L
     mae_prev   = compute_mae(y, y_hat_0)
     y_hat_i    = y_hat_0
 
@@ -114,6 +117,9 @@ def run_algorithm1(window, p_exam_so_far=''):
         p_refine_i  = build_p_refine(p_feed_i, target_time=f'Day {window.get("date_end", t + 1)}')
         eq5_context += format_output(y_hat_i) + '\n' + p_feed_i + '\n' + p_refine_i + '\n'
         y_hat_next  = parse_prediction(call_llm(eq5_context, max_tokens=512))
+        if y_hat_next is None:
+            # LLM returned unparseable output — keep previous prediction and stop
+            y_hat_next = y_hat_i
 
         mae_curr  = compute_mae(y, y_hat_next)
         delta_mae = abs(mae_curr - mae_prev)
