@@ -7,7 +7,7 @@ from datetime import datetime
 
 import tiktoken
 from openai import OpenAI
-from config import VLLM_BASE_URL, VLLM_MODEL, TEMPERATURE
+from config import VLLM_BASE_URL, VLLM_MODEL, TEMPERATURE, USE_OPENAI, OPENAI_MODEL
 
 _enc = tiktoken.get_encoding('cl100k_base')
 
@@ -18,7 +18,10 @@ LOG_PATH = os.path.join('outputs', 'llm_calls_log.jsonl')
 def _get_client():
     global _client
     if _client is None:
-        _client = OpenAI(base_url=VLLM_BASE_URL, api_key='token')
+        if USE_OPENAI:
+            _client = OpenAI()  # reads OPENAI_API_KEY from env
+        else:
+            _client = OpenAI(base_url=VLLM_BASE_URL, api_key='token')
     return _client
 
 
@@ -30,12 +33,13 @@ def call_llm(prompt, max_tokens=512):
     client = _get_client()
     os.makedirs('outputs', exist_ok=True)
 
+    model = OPENAI_MODEL if USE_OPENAI else VLLM_MODEL
     t0 = time.time()
     response = client.chat.completions.create(
-        model=VLLM_MODEL,
+        model=model,
         messages=[{'role': 'user', 'content': prompt}],
         temperature=TEMPERATURE,
-        max_tokens=max_tokens,
+        max_completion_tokens=max_tokens,
     )
     elapsed = time.time() - t0
     text = response.choices[0].message.content or ''

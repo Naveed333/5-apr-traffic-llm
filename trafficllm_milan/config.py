@@ -19,6 +19,10 @@ VLLM_BASE_URL = 'http://localhost:8000/v1'
 VLLM_MODEL = '/workspace/models/llama-3.1-8b'
 # VLLM_MODEL = '/workspace/models/llama-3.1-1b'
 
+# OpenAI settings — set USE_OPENAI=True to route calls to OpenAI instead of vLLM
+USE_OPENAI = True
+OPENAI_MODEL = 'gpt-4o-mini'
+
 TEMPERATURE = 0.0
 
 CONTEXT_SIZES = [4096, 65536, 131072]
