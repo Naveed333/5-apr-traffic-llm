@@ -16,7 +16,8 @@ CONVERGENCE_THRESHOLD = 0.1
 MAX_ITERATIONS = 10
 
 VLLM_BASE_URL = 'http://localhost:8000/v1'
-VLLM_MODEL = '/workspace/models/llama-3.1-8b'
+VLLM_MODEL = '/workspace/models/llama3.1-8b-awq'
+# VLLM_MODEL = '/workspace/models/llama-3.1-8b'
 # VLLM_MODEL = '/workspace/models/llama-3.1-1b'
 
 TEMPERATURE = 0.0
